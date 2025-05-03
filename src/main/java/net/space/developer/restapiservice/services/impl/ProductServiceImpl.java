@@ -8,12 +8,16 @@ import net.space.developer.restapiservice.mapper.ProductMapper;
 import net.space.developer.restapiservice.model.ProductDTO;
 import net.space.developer.restapiservice.repository.ProductRepository;
 import net.space.developer.restapiservice.services.ProductService;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
 import java.util.Optional;
+
 
 /**
  * Product service class to implements the products features
@@ -33,6 +37,7 @@ public class ProductServiceImpl implements ProductService {
      * {@inheritDoc}
      */
     @Override
+    @Cacheable(value = ApplicationConstants.PRODUCTS_CACHE)
     public List<ProductDTO> getAllProducts(Pageable pageable) {
         Page<Product> pageProducts = productRepository.findAll(pageable);
 
@@ -46,6 +51,7 @@ public class ProductServiceImpl implements ProductService {
      * {@inheritDoc}
      */
     @Override
+    @Cacheable(value = ApplicationConstants.PRODUCTS_CACHE)
     public List<ProductDTO> getProductsByCategory(String category, Pageable pageable) {
         Page<Product> pageProduct = productRepository.findByCategory(category, pageable);
 
@@ -59,6 +65,7 @@ public class ProductServiceImpl implements ProductService {
      * {@inheritDoc}
      */
     @Override
+    @Cacheable(value = ApplicationConstants.PRODUCTS_CACHE)
     public List<ProductDTO> getProductsByName(String productName, Pageable pageable) {
         Page<Product> pageProduct = productRepository.findByNameContainingIgnoreCase(productName, pageable);
 
@@ -72,6 +79,7 @@ public class ProductServiceImpl implements ProductService {
      * {@inheritDoc}
      */
     @Override
+    @Cacheable(value = ApplicationConstants.PRODUCT_CACHE, key = "#id")
     public ProductDTO getProductById(String id) {
         Optional<Product> opt = productRepository.findById(id);
 
@@ -99,6 +107,7 @@ public class ProductServiceImpl implements ProductService {
      * {@inheritDoc}
      */
     @Override
+    @CachePut(value = ApplicationConstants.PRODUCT_CACHE, key = "#id",unless = "#result == null")
     public ProductDTO updateProduct(String id, ProductDTO productDTO) {
         Optional<Product> opt = productRepository.findById(id);
 
@@ -117,6 +126,7 @@ public class ProductServiceImpl implements ProductService {
      * {@inheritDoc}
      */
     @Override
+    @CacheEvict(value = ApplicationConstants.PRODUCT_CACHE, key = "#id",allEntries = true)
     public boolean deleteProduct(String id) {
         Optional<Product> opt = productRepository.findById(id);
 
