@@ -58,4 +58,16 @@ public class Product {
     @Field
     @NotNull
     private State state;
+
+    public Product(Product product){
+        setId(product.getId());
+        setName(product.getName());
+        setDescription(product.getDescription());
+        setCategory(product.getCategory());
+        setPrice(product.getPrice());
+        setImages(product.getImages());
+        setBrand(product.getBrand());
+        setBatch(product.getBatch());
+        setState(product.getState());
+    }
 }
