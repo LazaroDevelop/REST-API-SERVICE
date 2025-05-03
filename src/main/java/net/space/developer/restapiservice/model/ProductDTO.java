@@ -8,6 +8,8 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import net.space.developer.restapiservice.documents.enums.Category;
+import net.space.developer.restapiservice.documents.enums.State;
 
 import java.util.List;
 
@@ -35,7 +37,7 @@ public class ProductDTO {
 
     @NotNull(message = "Product category cannot be null")
     @NotBlank(message = "Product category is required")
-    private String category;
+    private Category category;
 
     @Min(value = 0)
     private double price;
@@ -48,5 +50,5 @@ public class ProductDTO {
 
     @NotNull(message = "Product state cannot be null")
     @NotBlank(message = "Product state is required")
-    private String state;
+    private State state;
 }
