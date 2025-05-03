@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: rest-api-service
+
+  cache:
+    cache-names:
+      - 'products'
+      - 'product'
+
+  datasource:
+    mongodb:
+      database: ${DB_NAME:product_admin}
+      username: ${DB_USER:admin}
+      password: ${DB_PASS:admin}
+      uri: ${DB_URL:mongodb://localhost:27017}
