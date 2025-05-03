@@ -8,6 +8,7 @@ import lombok.NoArgsConstructor;
 import net.space.developer.restapiservice.documents.enums.Category;
 import net.space.developer.restapiservice.documents.enums.State;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.util.List;
@@ -23,6 +24,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
+@Document("t_product")
 public class Product {
 
     @Id
