@@ -13,3 +13,6 @@ spring:
       username: ${DB_USER:admin}
       password: ${DB_PASS:admin}
       uri: ${DB_URL:mongodb://localhost:27017}
+
+  profiles:
+    active: "dev"

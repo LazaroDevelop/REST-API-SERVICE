@@ -1,7 +1,7 @@
 package net.space.developer.restapiservice.integration;
 
 import lombok.extern.slf4j.Slf4j;
-import net.space.developer.restapiservice.TestcontainersConfiguration;
+import net.space.developer.restapiservice.config.TestcontainersConfiguration;
 import net.space.developer.restapiservice.documents.Product;
 import net.space.developer.restapiservice.documents.enums.Category;
 import net.space.developer.restapiservice.documents.enums.State;
@@ -149,6 +149,11 @@ class ProductMongoDataIntegrationTest {
     }
 
 
+    /**
+     * Create an instance of {@link Product}
+     *
+     * @return a product with mock data information
+     */
     private Product createProduct(){
         Product product = new Product();
         product.setName("Product1");
@@ -162,6 +167,9 @@ class ProductMongoDataIntegrationTest {
         return product;
     }
 
+    /**
+     * After each execution print the current instance
+     */
     @AfterEach
     void beforeComplete(){
         if(Objects.nonNull(this.currentInstance)){

@@ -1,9 +1,12 @@
-package net.space.developer.restapiservice.common.exceptions;
+package net.space.developer.restapiservice.common.exception;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.ResponseStatus;
+/**
+ * Product not found exception custom class
+ *
+ * @author Lazaro Noel Guerra Medina
+ * @since 2025-04-29
+ */
 
-@ResponseStatus(HttpStatus.NOT_FOUND)
 public class ProductNotFoundException extends RuntimeException {
 
     public ProductNotFoundException(){}
