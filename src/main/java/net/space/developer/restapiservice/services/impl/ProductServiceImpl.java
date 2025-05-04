@@ -1,7 +1,7 @@
 package net.space.developer.restapiservice.services.impl;
 
 import lombok.RequiredArgsConstructor;
-import net.space.developer.restapiservice.common.exceptions.ProductNotFoundException;
+import net.space.developer.restapiservice.common.exception.ProductNotFoundException;
 import net.space.developer.restapiservice.common.utility.ApplicationConstants;
 import net.space.developer.restapiservice.documents.Product;
 import net.space.developer.restapiservice.mapper.ProductMapper;
@@ -30,8 +30,28 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ProductServiceImpl implements ProductService {
 
+    /**
+     * Product mapper injection
+     */
     private final ProductMapper productMapper;
+
+    /**
+     * Product repository injection
+     */
     private final ProductRepository productRepository;
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public List<ProductDTO> findAllProducts() {
+        List<Product> products = productRepository.findAll();
+
+        return products
+                .stream()
+                .map(productMapper::toDTO)
+                .toList();
+    }
 
     /**
      * {@inheritDoc}
@@ -140,9 +160,10 @@ public class ProductServiceImpl implements ProductService {
 
     /**
      * Get the found product and update the information
+     *
      * @param productDTO the new product information
      * @param opt an {@link Optional} of {@link ProductDTO}
-     * @return
+     * @return the instance of {@link Product} with all the information
      */
     private Product getFoundProduct(ProductDTO productDTO, Optional<Product> opt) {
         Product product = opt.get();

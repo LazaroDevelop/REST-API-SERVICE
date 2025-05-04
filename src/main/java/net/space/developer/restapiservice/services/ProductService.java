@@ -13,8 +13,17 @@ import java.util.List;
  */
 
 public interface ProductService {
+
+    /**
+     * Get all the products int eh system without pagination
+     *
+     * @return @return a list of {@link ProductDTO}
+     */
+    List<ProductDTO> findAllProducts();
+
     /**
      * Get all the products in the system
+     *
      * @param pageable a Page request with information
      * @return a list of {@link ProductDTO}
      */
@@ -22,6 +31,7 @@ public interface ProductService {
 
     /**
      * Get all the products by a given category
+     *
      * @param category the product category
      * @param pageable a Page request with information
      * @return a list of {@link ProductDTO}
@@ -30,6 +40,7 @@ public interface ProductService {
 
     /**
      * Get all the products by a given name
+     *
      * @param productName the product name
      * @param pageable a Page request with information
      * @return a list of {@link ProductDTO}
@@ -38,6 +49,7 @@ public interface ProductService {
 
     /**
      * Get a product by a given identifier
+     *
      * @param id the identifier of the product
      * @return the found instance of {@link ProductDTO}
      */
@@ -45,6 +57,7 @@ public interface ProductService {
 
     /**
      * Create a new product from scratch
+     *
      * @param product the product information
      * @return the new instance of {@link ProductDTO}
      */
@@ -52,6 +65,7 @@ public interface ProductService {
 
     /**
      * Update an exiting product by identifier
+     *
      * @param id the product identifier
      * @param productDTO the updated information
      * @return an instance of {@link ProductDTO} updated
@@ -60,6 +74,7 @@ public interface ProductService {
 
     /**
      * Delete a given product by identifier
+     *
      * @param id the product identifier
      * @return true if was deleted, false in other case
      */

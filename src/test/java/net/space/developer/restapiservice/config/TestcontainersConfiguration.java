@@ -1,4 +1,4 @@
-package net.space.developer.restapiservice;
+package net.space.developer.restapiservice.config;
 
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.boot.testcontainers.service.connection.ServiceConnection;

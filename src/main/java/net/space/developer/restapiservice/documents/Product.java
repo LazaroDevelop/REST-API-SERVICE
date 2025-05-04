@@ -27,38 +27,70 @@ import java.util.List;
 @Document("t_product")
 public class Product {
 
+    /**
+     * Product entity id
+     */
     @Id
     private String id;
 
+    /**
+     * Name field
+     */
     @Field
     @NotNull
     private String name;
 
+    /**
+     * Description field
+     */
     @Field
     private String description;
 
+    /**
+     * Category field
+     */
     @Field
     @NotNull
     private Category category;
 
+    /**
+     * Price field
+     */
     @Field
     @NotNull
     private Double price;
 
+    /**
+     * List of images related to the product
+     */
     @Field
     private List<String> images;
 
+    /**
+     * Brand of the product
+     */
     @Field
     private String brand;
 
+    /**
+     * Batch of the product
+     */
     @Field
     @NotNull
     private String batch;
 
+    /**
+     * Product state
+     */
     @Field
     @NotNull
     private State state;
 
+    /**
+     * Copy constructor
+     *
+     * @param product the product instance to copy
+     */
     public Product(Product product){
         setId(product.getId());
         setName(product.getName());

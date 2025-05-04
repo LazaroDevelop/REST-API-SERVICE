@@ -15,6 +15,22 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductRepository extends MongoRepository<Product, String> {
+
+    /**
+     * Find all the products in the repository that match with the category
+     *
+     * @param category the given category
+     * @param pageable the pageable information
+     * @return an instance of {@link Page} with paged information
+     */
     Page<Product> findByCategory(String category,Pageable pageable);
+
+    /**
+     * Find all the products in the repository that match with the name
+     *
+     * @param name the given name
+     * @param pageable the pageable information
+     * @return an instance of {@link Page} with paged information
+     */
     Page<Product> findByNameContainingIgnoreCase(String name,Pageable pageable);
 }
