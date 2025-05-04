@@ -10,6 +10,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import net.space.developer.restapiservice.documents.enums.Category;
 import net.space.developer.restapiservice.documents.enums.State;
+import org.springframework.hateoas.RepresentationModel;
 
 import java.util.List;
 
@@ -24,7 +25,8 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class ProductDTO {
+public class ProductDTO extends RepresentationModel<ProductDTO> {
+
     private String id;
 
     @NotNull(message = "Product name cannot be null")
