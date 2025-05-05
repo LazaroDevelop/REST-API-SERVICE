@@ -12,6 +12,7 @@ import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
@@ -58,13 +59,15 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Cacheable(value = ApplicationConstants.PRODUCTS_CACHE)
-    public List<ProductDTO> getAllProducts(Pageable pageable) {
+    public Page<ProductDTO> getAllProducts(Pageable pageable) {
         Page<Product> pageProducts = productRepository.findAll(pageable);
 
-        return pageProducts.getContent()
+        var result = pageProducts.getContent()
                 .stream()
                 .map(productMapper::toDTO)
                 .toList();
+
+        return new PageImpl<>(result, pageable, pageProducts.getTotalElements());
     }
 
     /**
@@ -72,13 +75,15 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Cacheable(value = ApplicationConstants.PRODUCTS_CACHE)
-    public List<ProductDTO> getProductsByCategory(String category, Pageable pageable) {
+    public Page<ProductDTO> getProductsByCategory(String category, Pageable pageable) {
         Page<Product> pageProduct = productRepository.findByCategory(category, pageable);
 
-        return pageProduct.getContent()
+        var result = pageProduct.getContent()
                 .stream()
                 .map(productMapper::toDTO)
                 .toList();
+
+        return new PageImpl<>(result, pageable, pageProduct.getTotalElements());
     }
 
     /**
@@ -86,13 +91,15 @@ public class ProductServiceImpl implements ProductService {
      */
     @Override
     @Cacheable(value = ApplicationConstants.PRODUCTS_CACHE)
-    public List<ProductDTO> getProductsByName(String productName, Pageable pageable) {
+    public Page<ProductDTO> getProductsByName(String productName, Pageable pageable) {
         Page<Product> pageProduct = productRepository.findByNameContainingIgnoreCase(productName, pageable);
 
-        return pageProduct.getContent()
+        var result = pageProduct.getContent()
                 .stream()
                 .map(productMapper::toDTO)
                 .toList();
+
+        return new PageImpl<>(result, pageable, pageProduct.getTotalElements());
     }
 
     /**

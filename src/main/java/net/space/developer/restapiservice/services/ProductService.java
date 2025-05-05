@@ -1,6 +1,7 @@
 package net.space.developer.restapiservice.services;
 
 import net.space.developer.restapiservice.model.ProductDTO;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 
 import java.util.List;
@@ -27,7 +28,7 @@ public interface ProductService {
      * @param pageable a Page request with information
      * @return a list of {@link ProductDTO}
      */
-    List<ProductDTO> getAllProducts(Pageable pageable);
+    Page<ProductDTO> getAllProducts(Pageable pageable);
 
     /**
      * Get all the products by a given category
@@ -36,7 +37,7 @@ public interface ProductService {
      * @param pageable a Page request with information
      * @return a list of {@link ProductDTO}
      */
-    List<ProductDTO> getProductsByCategory(String category, Pageable pageable);
+    Page<ProductDTO> getProductsByCategory(String category, Pageable pageable);
 
     /**
      * Get all the products by a given name
@@ -45,7 +46,7 @@ public interface ProductService {
      * @param pageable a Page request with information
      * @return a list of {@link ProductDTO}
      */
-    List<ProductDTO> getProductsByName(String productName, Pageable pageable);
+    Page<ProductDTO> getProductsByName(String productName, Pageable pageable);
 
     /**
      * Get a product by a given identifier

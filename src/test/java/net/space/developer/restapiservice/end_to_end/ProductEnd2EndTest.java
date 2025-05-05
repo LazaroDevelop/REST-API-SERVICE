@@ -18,6 +18,7 @@ import org.mockito.MockitoAnnotations;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.hateoas.EntityModel;
 import org.springframework.http.MediaType;
@@ -213,13 +214,14 @@ class ProductEnd2EndTest {
         var product = createProduct();
 
         BeanUtils.copyProperties(product, dto);
+
         var list = List.of(dto);
 
         var model = EntityModel.of(dto);
 
         when(productModelAssembler.toModel(any(ProductDTO.class))).thenReturn(model);
 
-        when(productService.getAllProducts(any(Pageable.class))).thenReturn(list);
+        when(productService.getAllProducts(any(Pageable.class))).thenReturn(new PageImpl<>(list));
 
         mockMvc.perform(
                 get("/api/v1/products/all-pagination")
@@ -249,7 +251,7 @@ class ProductEnd2EndTest {
 
         BeanUtils.copyProperties(product, dto);
 
-        when(productService.getAllProducts(any(Pageable.class))).thenReturn(new ArrayList<>());
+        when(productService.getAllProducts(any(Pageable.class))).thenReturn(new PageImpl<>(new ArrayList<>()));
 
         mockMvc.perform(
                         get("/api/v1/products/all-pagination")
@@ -282,7 +284,7 @@ class ProductEnd2EndTest {
 
         when(productModelAssembler.toModel(any(ProductDTO.class))).thenReturn(model);
 
-        when(productService.getAllProducts(any(Pageable.class))).thenReturn(list);
+        when(productService.getAllProducts(any(Pageable.class))).thenReturn(new PageImpl<>(list));
 
         mockMvc.perform(
                 get("/api/v1/products/all-pagination-sorting")
@@ -313,7 +315,7 @@ class ProductEnd2EndTest {
 
         BeanUtils.copyProperties(product, dto);
 
-        when(productService.getAllProducts(any(Pageable.class))).thenReturn(new ArrayList<>());
+        when(productService.getAllProducts(any(Pageable.class))).thenReturn(new PageImpl<>(new ArrayList<>()));
 
         mockMvc.perform(
                         get("/api/v1/products/all-pagination-sorting")
@@ -347,7 +349,7 @@ class ProductEnd2EndTest {
         QueryModel query = new QueryModel("Product 1");
 
         when(productModelAssembler.toModel(any(ProductDTO.class))).thenReturn(model);
-        when(productService.getProductsByName(anyString(), any(Pageable.class))).thenReturn(list);
+        when(productService.getProductsByName(anyString(), any(Pageable.class))).thenReturn(new PageImpl<>(list));
 
         mockMvc.perform(
                 post("/api/v1/products/all-pagination/by-name")
@@ -380,7 +382,7 @@ class ProductEnd2EndTest {
 
         QueryModel model = new QueryModel("Product 1");
 
-        when(productService.getProductsByName(anyString(), any(Pageable.class))).thenReturn(new ArrayList<>());
+        when(productService.getProductsByName(anyString(), any(Pageable.class))).thenReturn(new PageImpl<>(new ArrayList<>()));
 
         mockMvc.perform(
                         post("/api/v1/products/all-pagination/by-name")
@@ -414,7 +416,7 @@ class ProductEnd2EndTest {
         QueryModel query = new QueryModel(Category.CLOTHES.name());
 
         when(productModelAssembler.toModel(any(ProductDTO.class))).thenReturn(model);
-        when(productService.getProductsByCategory(anyString(), any(Pageable.class))).thenReturn(list);
+        when(productService.getProductsByCategory(anyString(), any(Pageable.class))).thenReturn(new PageImpl<>(list));
 
         mockMvc.perform(
                 post("/api/v1/products/all-pagination/by-category")
@@ -447,7 +449,7 @@ class ProductEnd2EndTest {
 
         QueryModel model = new QueryModel(Category.CLOTHES.name());
 
-        when(productService.getProductsByCategory(anyString(), any(Pageable.class))).thenReturn(new ArrayList<>());
+        when(productService.getProductsByCategory(anyString(), any(Pageable.class))).thenReturn(new PageImpl<>(new ArrayList<>()));
 
         mockMvc.perform(
                         post("/api/v1/products/all-pagination/by-category")
