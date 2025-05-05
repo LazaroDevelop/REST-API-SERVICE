@@ -1,5 +1,6 @@
 package net.space.developer.restapiservice.controller;
 
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.constraints.NotNull;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -7,6 +8,7 @@ import net.space.developer.restapiservice.common.assembler.ProductModelAssembler
 import net.space.developer.restapiservice.model.ProductDTO;
 import net.space.developer.restapiservice.model.QueryModel;
 import net.space.developer.restapiservice.services.ProductService;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort;
 import org.springframework.hateoas.CollectionModel;
@@ -33,6 +35,10 @@ import static org.springframework.hateoas.server.mvc.WebMvcLinkBuilder.methodOn;
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/v1/products")
+@Tag(
+        name = "Product Controller",
+        description = "Product Controller to manage all the endpoints about product operations"
+)
 public class ProductController {
 
     /**
@@ -51,6 +57,7 @@ public class ProductController {
      * @return a {@link ResponseEntity} with the list of the products, if the list is empty or null the http status code will be 204
      */
     @GetMapping("/all")
+    @Tag(name = "Find all", description = "Find all the products in the system")
     public ResponseEntity<CollectionModel<EntityModel<ProductDTO>>> getAllProducts() {
         List<ProductDTO> response = productService.findAllProducts();
 
@@ -65,7 +72,9 @@ public class ProductController {
      * @param pageSize the size of the page
      * @return a {@link ResponseEntity} with the list of the products, if the list is empty or null the http status code will be 204
      */
+
     @GetMapping("/all-pagination")
+    @Tag(name = "Find all with pagination", description = "Find all the products using pagination in the system")
     public ResponseEntity<CollectionModel<EntityModel<ProductDTO>>> getAllProductsWithPage(
             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
             @RequestParam(value = "size", defaultValue = "10") int pageSize
@@ -84,6 +93,7 @@ public class ProductController {
      * @return a {@link ResponseEntity} with the list of the products, if the list is empty or null the http status code will be 204
      */
     @GetMapping("/all-pagination-sorting")
+    @Tag(name = "Find all with pagination and sorting", description = "Find all the products using pagination and sorting in the system")
     public ResponseEntity<CollectionModel<EntityModel<ProductDTO>>> getAllProductsWithPageAndSorting(
             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
@@ -108,6 +118,7 @@ public class ProductController {
      * @return a {@link ResponseEntity} with the list of the products, if the list is empty or null the http status code will be 204
      */
     @PostMapping("/all-pagination/by-name")
+    @Tag(name = "Find by name", description = "Find all the products by name using pagination in the system")
     public ResponseEntity<CollectionModel<EntityModel<ProductDTO>>> getAllProductsWithPageAndSortingByName(
             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
@@ -115,7 +126,7 @@ public class ProductController {
     ){
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
 
-        List<ProductDTO> response = productService.getProductsByName(queryModel.getQuery(), pageRequest);
+        Page<ProductDTO> response = productService.getProductsByName(queryModel.getQuery(), pageRequest);
 
         return getCollectionModelResponseEntity(response);
     }
@@ -129,6 +140,7 @@ public class ProductController {
      * @return a {@link ResponseEntity} with the list of the products, if the list is empty or null the http status code will be 204
      */
     @PostMapping("/all-pagination/by-category")
+    @Tag(name = "Find by category", description = "Find all the products by category using pagination in the system")
     public ResponseEntity<CollectionModel<EntityModel<ProductDTO>>> getAllProductsWithPageAndSortingByCategory(
             @RequestParam(value = "page", defaultValue = "0") int pageNumber,
             @RequestParam(value = "size", defaultValue = "10") int pageSize,
@@ -136,7 +148,7 @@ public class ProductController {
     ){
         PageRequest pageRequest = PageRequest.of(pageNumber, pageSize);
 
-        List<ProductDTO> response = productService.getProductsByCategory(queryModel.getQuery(), pageRequest);
+        Page<ProductDTO> response = productService.getProductsByCategory(queryModel.getQuery(), pageRequest);
 
         if(Objects.isNull(response) || response.isEmpty()){
             return ResponseEntity.noContent().build();
@@ -152,6 +164,7 @@ public class ProductController {
      * @return the saved product instance in the system
      */
     @PostMapping("/add")
+    @Tag(name = "Create one", description = "Find all the products using pagination in the system")
     public ResponseEntity<EntityModel<ProductDTO>> addProduct(@RequestBody ProductDTO productDTO) {
         ProductDTO response = productService.createProduct(productDTO);
 
@@ -169,6 +182,7 @@ public class ProductController {
      * @return the found product
      */
     @GetMapping("/by-id/{id}")
+    @Tag(name = "Find by identifier", description = "Find a product by given identifier")
     public ResponseEntity<EntityModel<ProductDTO>> getProductById(@PathVariable("id") String id) {
 
         ProductDTO response = productService.getProductById(id);
@@ -188,6 +202,7 @@ public class ProductController {
      * @return the updated product information
      */
     @PutMapping("/update/{id}")
+    @Tag(name = "Update one", description = "Update one the product by given identifier")
     public ResponseEntity<EntityModel<ProductDTO>> updateProduct(@PathVariable("id") String id, @RequestBody ProductDTO productDTO) {
         ProductDTO response = productService.updateProduct(id, productDTO);
 
@@ -205,6 +220,7 @@ public class ProductController {
      * @return 204 if was deleted, 404 in other case
      */
     @DeleteMapping("/delete/{id}")
+    @Tag(name = "Delete one", description = "Delete one product by identifier")
     public ResponseEntity<Boolean> deleteProduct(@PathVariable("id") String id) {
         boolean result = productService.deleteProduct(id);
 
@@ -220,9 +236,26 @@ public class ProductController {
     @NotNull
     private ResponseEntity<CollectionModel<EntityModel<ProductDTO>>> getCollectionModelResponseEntity(PageRequest pageRequest) {
 
-        List<ProductDTO> response = productService.getAllProducts(pageRequest);
+        Page<ProductDTO> response = productService.getAllProducts(pageRequest);
 
         return getCollectionModelResponseEntity(response);
+    }
+
+    /**
+     * Check the result paged list if is empty build a not content information, in other case return the list with the collection model
+     *
+     * @param response the list of products
+     * @return an instance of {@link ResponseEntity} with the result information
+     */
+    @NotNull
+    private ResponseEntity<CollectionModel<EntityModel<ProductDTO>>> getCollectionModelResponseEntity(Page<ProductDTO> response) {
+        if(Objects.isNull(response) || response.getContent().isEmpty()){
+            return ResponseEntity.noContent().build();
+        }
+
+        return ResponseEntity.status(HttpStatus.OK).body(CollectionModel.of(
+                response.map(productModelAssembler::toModel),
+                linkTo(methodOn(ProductController.class).getAllProducts()).withSelfRel()));
     }
 
     /**
